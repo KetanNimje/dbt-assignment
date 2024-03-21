@@ -1,0 +1,9 @@
+models:
+  - name: bronze_layer
+    +schema: bronze
+
+  - name: silver_layer
+    +schema: silver
+
+  - name: gold_layer
+    +schema: gold

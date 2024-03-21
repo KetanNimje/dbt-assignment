@@ -1,0 +1,90 @@
+version: 2
+
+models:
+  - name: fact_claims
+    description: Fact table consisting of all foreign keys for dimension table. 
+    columns:
+      - name: member_key
+        description: unique identifier for member
+        tests:
+          - unique
+          - not_null
+      - name: diagnosis_1_key
+        description: First diagnosis of member
+      - name: diagnosis_2_key
+        description: Second diagnosis of member
+      - name: diagnosis_3_key
+        description: Third diagnosis of member
+      - name: claimed_date_key
+        description: date of claim of insurance
+      - name: enrolled_date_key
+        description: date of enrollment by the member
+      - name: paid_date_key
+        description: date of payment of insurance coverage
+        tests:
+          - unique
+          - not_null
+      - name: claim_id
+        description: unique identifier for each claim
+        tests:
+          - unique
+          - not_null
+      - name: allowed_amount
+        description: maximum amount to be payable by insurance company
+        tests:
+          - relationships:
+              to: ref('cleaned_table_us_healthcare_claims')
+              field: allowed_amount
+      - name: paid_amount
+        description: amount which is paid by the insurance company
+        tests:
+          - relationships:
+              to: ref('cleaned_table_us_healthcare_claims')
+              field: paid_amount
+
+  - name: dim_member
+    description: Dimension table of members consisting details about member 
+    columns:
+      - name: member_key
+        description: Primary Key/unique identifier for member
+        tests:
+          - unique
+          - not_null
+      - name: name
+        description: name of member
+      - name: address
+        description: address of member
+      - name: gender
+        description: gender of member
+        tests:
+          - accepted_values:
+              values: ['Male','Female','Others']
+      - name: email
+        description: email of member
+        
+  - name: dim_diagnosis
+    description: dimension table of diagnosis containing details of diagnosis
+    columns:
+      - name: diagnosis_key
+        description: code for each diagnosis
+        tests:
+          - relationships:
+              to: ref('cleaned_table_icd_codes')
+              field: full_code
+      - name: category_code
+        description: code for each category of diagnosis
+      - name: diagnosis_code
+        description: code for each diagnosis
+      - name: abbreviated_description
+        description: description of diagnosis
+      - name: full_description
+        description: description of diagnosis
+      - name: category_title
+        description: comman name of the diagnosis
+
+  - name: dim_date
+    description: dimension table of date
+    columns:
+      - name: date_key
+        description: Column consisting of all dates i.e. paid date, claim date, enrolled date
+       
