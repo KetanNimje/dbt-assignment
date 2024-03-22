@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: Bootcamp_task
-    description: healthcare datasets
+    description: US healthcare claim dataset and icd codes dataset
     database: Bootcamp_task
     schema: public
     tables:

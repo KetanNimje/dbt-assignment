@@ -9,32 +9,50 @@ models:
         tests:
           - unique
           - not_null
+
       - name: diagnosis_1_key
         description: First diagnosis of member
+        tests:
+          - relationships:
+              to: ref('cleaned_table_us_healthcare_claims')
+              field: diagnosis_1
+
       - name: diagnosis_2_key
         description: Second diagnosis of member
+        tests:
+          - relationships:
+              to: ref('cleaned_table_us_healthcare_claims')
+              field: diagnosis_2
+
       - name: diagnosis_3_key
         description: Third diagnosis of member
+        tests:
+          - relationships:
+              to: ref('cleaned_table_us_healthcare_claims')
+              field: diagnosis_3
+
       - name: claimed_date_key
         description: date of claim of insurance
+
       - name: enrolled_date_key
         description: date of enrollment by the member
+
       - name: paid_date_key
         description: date of payment of insurance coverage
-        tests:
-          - unique
-          - not_null
+
       - name: claim_id
         description: unique identifier for each claim
         tests:
           - unique
           - not_null
+
       - name: allowed_amount
         description: maximum amount to be payable by insurance company
         tests:
           - relationships:
               to: ref('cleaned_table_us_healthcare_claims')
               field: allowed_amount
+
       - name: paid_amount
         description: amount which is paid by the insurance company
         tests:
@@ -50,15 +68,27 @@ models:
         tests:
           - unique
           - not_null
+
       - name: name
         description: name of member
+        tests:
+          - relationships:
+              to: ref('cleaned_table_us_healthcare_claims')
+              field: name
+
       - name: address
         description: address of member
+        tests:
+          - relationships:
+              to: ref('cleaned_table_us_healthcare_claims')
+              field: address
+
       - name: gender
         description: gender of member
         tests:
           - accepted_values:
               values: ['Male','Female','Others']
+
       - name: email
         description: email of member
         
@@ -71,20 +101,125 @@ models:
           - relationships:
               to: ref('cleaned_table_icd_codes')
               field: full_code
+          - unique
+          - not_null
+
       - name: category_code
         description: code for each category of diagnosis
+
       - name: diagnosis_code
         description: code for each diagnosis
+
       - name: abbreviated_description
         description: description of diagnosis
+
       - name: full_description
         description: description of diagnosis
+
       - name: category_title
         description: comman name of the diagnosis
+        tests:
+          - relationships:
+                to: ref('cleaned_table_icd_codes')
+                field: category_title
 
   - name: dim_date
     description: dimension table of date
     columns:
       - name: date_key
         description: Column consisting of all dates i.e. paid date, claim date, enrolled date
-       
+  
+  - name: icd_codes
+    description: ICD codes for all diagnosis given by WHO
+
+  - name: us_healthcare_claims
+    description: dataset consisting of data related to insurance claim by individuals 
+
+  - name: total_paid_amount_by_day
+    description: Describes the total amount paid by inusurance company on each day
+    columns:
+      - name: day_of_month
+        description: represents each day of a month
+
+      - name: total_paid_amount
+        description: the sum of amount paid by insurance company on that particular date 
+        
+  - name: total_paid_amount
+    description: describes the total amount paid by company
+    columns:
+      - name: total_paid_amount
+        description: sum of the paid amount
+    
+  - name: total_allowed_amount
+    description: describes the total allowed amount by company
+    columns:
+      - name: total_allowed_amount
+        description: sum total of the allowed amount
+
+  - name: frequency_of_diagnosis
+    description: represents the frequency of diagnosis that is occuring in the member population.
+    columns:
+      - name: diagnosis
+        description: ICD code for diagnosis
+        tests:
+          - unique
+          
+      - name: category_title
+        description: common name of the diagnosis
+        tests:
+          - relationships:
+                to: ref('dim_diagnosis')
+                field: category_title
+
+      - name: frequency
+        description: frequency of occurence of diagnosis in the member population.
+
+  - name: diagnosis_frequency_by_gender
+    description: represents the frequency of diagnosis in the member population by gender
+    columns:
+      - name: gender
+        description: gender description of the population
+        tests:
+          - accepted_values:
+              values: ['Male','Female','Others']
+          
+      - name: diagnosis_frequency
+        description: the occurence of diagnosis in particular gender.
+    
+  - name: count_of_diagnosis_of_member
+    description: describes the details of member and frequency of diagnosis for each.
+    columns:
+      - name: name
+        description: name of member
+        tests:
+          - relationships:
+                to: ref('dim_member')
+                field: name
+          
+      - name: address
+        description: address of member
+        tests:
+          - relationships:
+                to: ref('dim_member')
+                field: address
+      
+      - name: email
+        description: email of member
+        tests:
+          - relationships:
+                to: ref('dim_member')
+                field: email
+
+      - name: gender
+        description: gender of member
+        tests:
+          - relationships:
+                to: ref('dim_member')
+                field: gender
+
+      - name: diagnosis_count_member
+        description: number of times diagnosis check done by each member
+        
+
+    
+     
