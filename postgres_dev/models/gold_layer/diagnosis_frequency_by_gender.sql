@@ -18,7 +18,7 @@ JOIN {{ ref('dim_member') }} AS t2
 ON t1.member_key = t2.member_key
 	),
 ctelast AS(
-SELECT gender,COUNT(diagnosis_count_member) AS diagnosis_frequency FROM newcte
+SELECT gender,SUM(diagnosis_count_member) AS diagnosis_frequency FROM newcte
 GROUP BY gender
 ORDER BY diagnosis_frequency DESC
 )

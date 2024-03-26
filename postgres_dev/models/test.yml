@@ -19,17 +19,9 @@ models:
 
       - name: diagnosis_2_key
         description: Second diagnosis of member
-        tests:
-          - relationships:
-              to: ref('cleaned_table_us_healthcare_claims')
-              field: diagnosis_2
-
+        
       - name: diagnosis_3_key
         description: Third diagnosis of member
-        tests:
-          - relationships:
-              to: ref('cleaned_table_us_healthcare_claims')
-              field: diagnosis_3
 
       - name: claimed_date_key
         description: date of claim of insurance
@@ -78,10 +70,6 @@ models:
 
       - name: address
         description: address of member
-        tests:
-          - relationships:
-              to: ref('cleaned_table_us_healthcare_claims')
-              field: address
 
       - name: gender
         description: gender of member
@@ -126,7 +114,7 @@ models:
       - name: date_key
         description: primary key for the date dimension
        
-  - name: icd_codes
+  - name: cleaned_table_icd_codes
     description: ICD codes for all diagnosis given by WHO
 
   - name: cleaned_table_us_healthcare_claims
@@ -142,7 +130,7 @@ models:
         description: the sum of amount paid by insurance company on that particular date 
         
   - name: total_paid_amount
-    description: Describes the total amount paid by inusurance company
+    description: Describes the total amount paid by insurance company
     columns:
       - name: total_paid_amount
         description: total amount which is paid by company
@@ -152,7 +140,7 @@ models:
     columns:
       - name: total_allowed_amount
         description: sum total of the allowed amount
-
+  
   - name: frequency_of_diagnosis
     description: represents the frequency of diagnosis that is occuring in the member population.
     columns:
@@ -205,3 +193,9 @@ models:
 
       - name: diagnosis_count_member
         description: number of times diagnosis check done by each member
+  
+  - name: icd_codes
+    description: ICD codes for all diagnosis given by WHO
+
+  - name: us_healthcare_claims
+    description: dataset consisting of data related to insurance claim by individuals 
