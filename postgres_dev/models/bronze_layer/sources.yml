@@ -7,7 +7,7 @@ sources:
     schema: public
     tables:
       - name: ICD_Codes
-        description: ICD codes for each disease 
+        description: ICD codes for each diagnosis
         columns:
           - name: Full_Code
             tests:

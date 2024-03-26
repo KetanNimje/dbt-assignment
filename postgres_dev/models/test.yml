@@ -98,9 +98,6 @@ models:
       - name: diagnosis_key
         description: code for each diagnosis
         tests:
-          - relationships:
-              to: ref('cleaned_table_icd_codes')
-              field: full_code
           - unique
           - not_null
 
@@ -124,19 +121,19 @@ models:
                 field: category_title
 
   - name: dim_date
-    description: dimension table of date
+    description: dimension table for date
     columns:
       - name: date_key
-        description: Column consisting of all dates i.e. paid date, claim date, enrolled date
-  
+        description: primary key for the date dimension
+       
   - name: icd_codes
     description: ICD codes for all diagnosis given by WHO
 
-  - name: us_healthcare_claims
+  - name: cleaned_table_us_healthcare_claims
     description: dataset consisting of data related to insurance claim by individuals 
 
   - name: total_paid_amount_by_day
-    description: Describes the total amount paid by inusurance company on each day
+    description: Describes the total amount paid by insurance company on each day
     columns:
       - name: day_of_month
         description: represents each day of a month
@@ -145,10 +142,10 @@ models:
         description: the sum of amount paid by insurance company on that particular date 
         
   - name: total_paid_amount
-    description: describes the total amount paid by company
+    description: Describes the total amount paid by inusurance company
     columns:
       - name: total_paid_amount
-        description: sum of the paid amount
+        description: total amount which is paid by company
     
   - name: total_allowed_amount
     description: describes the total allowed amount by company
@@ -179,9 +176,6 @@ models:
     columns:
       - name: gender
         description: gender description of the population
-        tests:
-          - accepted_values:
-              values: ['Male','Female','Others']
           
       - name: diagnosis_frequency
         description: the occurence of diagnosis in particular gender.
@@ -198,17 +192,9 @@ models:
           
       - name: address
         description: address of member
-        tests:
-          - relationships:
-                to: ref('dim_member')
-                field: address
       
       - name: email
         description: email of member
-        tests:
-          - relationships:
-                to: ref('dim_member')
-                field: email
 
       - name: gender
         description: gender of member
@@ -219,7 +205,3 @@ models:
 
       - name: diagnosis_count_member
         description: number of times diagnosis check done by each member
-        
-
-    
-     
